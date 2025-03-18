@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   build-and-deploy-github-pages:
-    rungs-on: ubuntu-latest
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
 

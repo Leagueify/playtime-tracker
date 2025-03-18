@@ -1,0 +1,53 @@
+name: Deploy to GitHub Pages
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy-github-pages:
+    rungs-on: ubuntu-latest
+    environment:
+      name: github-pages
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Prepare Node Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.1
+          cache: "npm"
+          cache-dependency-path: "web/package-lock.json"
+
+      - name: Install Dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Build Page
+        working-directory: web
+        run: |
+          npm run build
+          touch dist/.nojekyll
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-articact@v3
+        with:
+          path: "web/dist"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

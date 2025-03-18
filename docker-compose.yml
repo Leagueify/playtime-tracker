@@ -1,0 +1,36 @@
+services:
+  traefik:
+    image: traefik:v3.2.3
+    command:
+      - --api.insecure=true
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.entrypoints=web
+      - traefik.http.routers.traefik.rule=Host(`traefik.localhost`)
+      - traefik.http.routers.traefik.service=api@internal
+    ports:
+      - 80:80
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  web:
+    image: leagueify-toi-tracker
+    build:
+      context: ./web
+    command: npm run dev
+    labels:
+      - traefik.enable=true
+
+      # all other frontend routes
+      - traefik.http.routers.leagueify-toi-tracker-web.entrypoints=web
+      - traefik.http.routers.leagueify-toi-tracker-web.rule=PathPrefix(`/`)
+      - traefik.http.services.leagueify-toi-tracker-web.loadbalancer.server.port=5173
+    restart: always
+    volumes:
+      - ./web:/app
+      - /app/node_modules

@@ -1,2 +1,3 @@
-# toi-tracker
+# Time on Ice Tracker
+
 The Leagueify Time on Ice Tracker simplifies logging player time on ice.

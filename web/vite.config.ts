@@ -15,20 +15,20 @@ export default defineConfig({
         enabled: true,
       },
       manifest: {
-        name: 'All-In-One Web App',
-        short_name: 'AIOWA',
-        description: 'All-In-One Web App built with a ReactJS frontend and Go backend bundled in a single executable.',
+        name: 'Leagueify Time on Ice Tracker',
+        short_name: 'Leagueify TOI',
+        description: 'Leagueify Time on Ice Tracker provides an easy intuitive way track player ice time.',
         display: 'standalone',
         orientation: 'portrait',
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'src/assets/react.svg',
+            src: 'src/assets/leagueify.svg',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'src/assets/react.svg',
+            src: 'src/assets/leagueify.svg',
             sizes: '512x512',
             type: 'image/png'
           }

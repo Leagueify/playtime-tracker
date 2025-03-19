@@ -84,7 +84,7 @@ export default function HockeyTimeTracker() {
 
   return (
     <div className="max-w-md mx-auto p-4 bg-gray-100 rounded-lg shadow-lg">
-      <h2 className="text-xl font-bold text-center mb-4">Hockey Time-on-Ice Tracker</h2>
+      <h2 className="text-xl font-bold text-center mb-4">Leagueify Time-on-Ice Tracker</h2>
       <Button onClick={() => setClockRunning(!clockRunning)} className="w-full mb-4 bg-blue-500 text-white py-2 rounded-lg flex justify-center items-center">
         {clockRunning ? "Pause Clock" : "Start Clock"}
       </Button>

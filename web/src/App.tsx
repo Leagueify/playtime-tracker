@@ -3,15 +3,13 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router'
 import './App.css'
 
-import Home from './Home.tsx'
-import Error from './Error.tsx'
+import Home from './Home'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route index element={<Home />} />
-        <Route path="*" element={<Error />} />
+        <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

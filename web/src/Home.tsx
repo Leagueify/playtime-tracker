@@ -61,11 +61,6 @@ export default function HockeyTimeTracker() {
     setTimeData((prev) => [...prev, { name: "New Player", total: 0, shiftTime: 0, active: false }]);
   };
 
-  const confirmDeletePlayer = (index: number) => {
-    setPlayerToDelete(index);
-    setShowDeleteModal(true);
-  };
-
   const deletePlayer = () => {
     if (playerToDelete !== null) {
       setTimeData((prev) => prev.filter((_, i) => i !== playerToDelete));

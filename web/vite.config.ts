@@ -15,20 +15,20 @@ export default defineConfig({
         enabled: true,
       },
       manifest: {
-        name: 'Leagueify Time on Ice Tracker',
-        short_name: 'Leagueify TOI',
-        description: 'Leagueify Time on Ice Tracker provides an easy intuitive way track player ice time.',
+        name: 'Leagueify Playtime Tracker',
+        short_name: 'Playtime',
+        description: 'Leagueify Playtime Tracker provides an easy intuitive way track athelete playtime.',
         display: 'standalone',
         orientation: 'portrait',
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'src/assets/leagueify.svg',
+            src: '/Leagueify Logo - 192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'src/assets/leagueify.svg',
+            src: '/Leagueify Logo - 512.png',
             sizes: '512x512',
             type: 'image/png'
           }

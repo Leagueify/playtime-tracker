@@ -14,8 +14,6 @@ export default function HockeyTimeTracker() {
   const [timeData, setTimeData] = useState<Player[]>([]);
   const [clockRunning, setClockRunning] = useState<boolean>(false);
   const [showResetModal, setShowResetModal] = useState<boolean>(false);
-  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-  const [playerToDelete, setPlayerToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     setTimeData(
@@ -58,15 +56,7 @@ export default function HockeyTimeTracker() {
   };
 
   const addPlayer = () => {
-    setTimeData((prev) => [...prev, { name: "New Player", total: 0, shiftTime: 0, active: false }]);
-  };
-
-  const deletePlayer = () => {
-    if (playerToDelete !== null) {
-      setTimeData((prev) => prev.filter((_, i) => i !== playerToDelete));
-      setShowDeleteModal(false);
-      setPlayerToDelete(null);
-    }
+    setTimeData((prev) => [...prev, { name: `Player ${timeData.length + 1}`, total: 0, shiftTime: 0, active: false }]);
   };
 
   const resetTimers = () => {
@@ -78,12 +68,23 @@ export default function HockeyTimeTracker() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-gray-100 rounded-lg shadow-lg">
-      <h2 className="text-xl font-bold text-center mb-4">Leagueify Time-on-Ice Tracker</h2>
-      <Button onClick={() => setClockRunning(!clockRunning)} className="w-full mb-4 bg-blue-500 text-white py-2 rounded-lg flex justify-center items-center">
-        {clockRunning ? "Pause Clock" : "Start Clock"}
-      </Button>
-      <div className="space-y-4">
+    <div className="max-w-md h-screen mx-auto p-4 bg-gray-100 rounded-lg shadow-lg flex flex-col">
+
+      {/* fixed header */}
+      <div className="sticky top-0 bg-gray-100 z-10 pb-2">
+        <h2 className="text-xl font-bold text-center mb-2">Leagueify Playtime Tracker</h2>
+        <div className="flex flex-col gap-2">
+          <Button onClick={() => setShowResetModal(true)} className="w-full bg-gray-600 text-white py-2 rounded-lg">
+            Reset Game
+          </Button>
+          <Button onClick={addPlayer} className="w-full bg-green-500 text-white py-2 rounded-lg">
+            Add Player
+          </Button>
+        </div>
+      </div>
+
+      {/* scrollable players section */}
+      <div className="flex-1 overflow-y-auto space-y-4 mt-2">
         {timeData.map((player, index) => (
           <div key={index} className="flex justify-between items-center bg-white p-3 rounded-lg shadow relative">
             <input
@@ -105,30 +106,26 @@ export default function HockeyTimeTracker() {
           </div>
         ))}
       </div>
-      <Button onClick={addPlayer} className="w-full mt-4 bg-green-500 text-white py-2 rounded-lg">
-        Add Player
-      </Button>
-      <Button onClick={() => setShowResetModal(true)} className="w-full mt-4 bg-gray-600 text-white py-2 rounded-lg">
-        Reset Game
-      </Button>
+
+      {/* fixed start clock button */}
+      <div className="sticky bottom-0 bg-gray-100 z-10 py-2">
+        <Button onClick={() => setClockRunning(!clockRunning)} className="w-full bg-blue-500 text-white py-2 rounded-lg">
+          {clockRunning ? "Pause Clock" : "Start Clock"}
+        </Button>
+      </div>
+
+      {/* reset modal */}
       {showResetModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <p className="mb-4">Are you sure you want to reset the game?</p>
             <div className="flex justify-between">
-              <Button onClick={resetTimers} className="bg-red-500 text-white px-4 py-2 rounded-lg">Yes, Reset</Button>
-              <Button onClick={() => setShowResetModal(false)} className="bg-gray-400 text-white px-4 py-2 rounded-lg">Cancel</Button>
-            </div>
-          </div>
-        </div>
-      )}
-      {showDeleteModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <p className="mb-4">Are you sure you want to delete this player?</p>
-            <div className="flex justify-between">
-              <Button onClick={deletePlayer} className="bg-red-500 text-white px-4 py-2 rounded-lg">Yes, Delete</Button>
-              <Button onClick={() => setShowDeleteModal(false)} className="bg-gray-400 text-white px-4 py-2 rounded-lg">Cancel</Button>
+              <Button onClick={resetTimers} className="bg-red-500 text-white px-4 py-2 rounded-lg">
+                Yes, Reset
+              </Button>
+              <Button onClick={() => setShowResetModal(false)} className="bg-gray-400 text-white px-4 py-2 rounded-lg">
+                Cancel
+              </Button>
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@ type Player = {
   active: boolean;
 };
 
-export default function HockeyTimeTracker() {
+export default function Home() {
   const [timeData, setTimeData] = useState<Player[]>([]);
   const [clockRunning, setClockRunning] = useState<boolean>(false);
   const [showResetModal, setShowResetModal] = useState<boolean>(false);

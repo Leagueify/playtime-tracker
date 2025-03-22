@@ -100,7 +100,16 @@ export default function HockeyTimeTracker() {
               {player.active ? "In Play" : "Bench"}
             </Button>
             <div className="text-center ml-4 w-16">
-              <div className="text-lg font-bold tabular-nums">{formatTime(player.shiftTime)}</div>
+              <div
+                className={`text-lg font-bold tabular-nums ${player.shiftTime >= 90
+                  ? "text-red-600"
+                  : player.shiftTime >= 75
+                    ? "text-amber-500"
+                    : "text-black"
+                  }`}
+              >
+                {formatTime(player.shiftTime)}
+              </div>
               <div className="text-sm text-gray-500 tabular-nums">{formatTime(player.total)}</div>
             </div>
           </div>

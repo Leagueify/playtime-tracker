@@ -97,7 +97,7 @@ export default function HockeyTimeTracker() {
               onClick={() => togglePlayer(index)}
               className={`ml-2 ${player.active ? "bg-red-500 text-white" : "bg-green-500 text-white"} px-6 py-3 rounded-lg`}
             >
-              {player.active ? "On Ice" : "Bench"}
+              {player.active ? "In Play" : "Bench"}
             </Button>
             <div className="text-center ml-4 w-16">
               <div className="text-lg font-bold tabular-nums">{formatTime(player.shiftTime)}</div>

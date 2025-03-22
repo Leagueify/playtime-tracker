@@ -1,0 +1,28 @@
+name: Test Leagueify Playtime Tracker
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  automated-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Prepare Node Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.1
+          cache: "npm"
+          cache-dependency-path: "web/package-lock.json"
+
+      - name: Install Dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Run Tests
+        working-directory: web
+        run: npx vitest --run

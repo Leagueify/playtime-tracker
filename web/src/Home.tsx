@@ -116,7 +116,7 @@ export default function HockeyTimeTracker() {
 
       {/* reset modal */}
       {showResetModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="z-100 fixed max-w-md mx-auto inset-0 flex items-center justify-center bg-black/80">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <p className="mb-4">Are you sure you want to reset the game?</p>
             <div className="flex justify-between">

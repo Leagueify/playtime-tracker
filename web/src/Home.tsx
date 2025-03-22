@@ -97,10 +97,19 @@ export default function HockeyTimeTracker() {
               onClick={() => togglePlayer(index)}
               className={`ml-2 ${player.active ? "bg-red-500 text-white" : "bg-green-500 text-white"} px-6 py-3 rounded-lg`}
             >
-              {player.active ? "On Ice" : "Bench"}
+              {player.active ? "In Play" : "Bench"}
             </Button>
             <div className="text-center ml-4 w-16">
-              <div className="text-lg font-bold tabular-nums">{formatTime(player.shiftTime)}</div>
+              <div
+                className={`text-lg font-bold tabular-nums ${player.shiftTime >= 90
+                  ? "text-red-600"
+                  : player.shiftTime >= 75
+                    ? "text-amber-500"
+                    : "text-black"
+                  }`}
+              >
+                {formatTime(player.shiftTime)}
+              </div>
               <div className="text-sm text-gray-500 tabular-nums">{formatTime(player.total)}</div>
             </div>
           </div>
@@ -116,7 +125,7 @@ export default function HockeyTimeTracker() {
 
       {/* reset modal */}
       {showResetModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="z-100 fixed max-w-md mx-auto inset-0 flex items-center justify-center bg-black/80">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <p className="mb-4">Are you sure you want to reset the game?</p>
             <div className="flex justify-between">

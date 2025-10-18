@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router'
 import './App.css'
 
 import Home from './Home'
+import NotFound from './404'
 import Privacy from './Privacy'
 
 createRoot(document.getElementById('root')!).render(
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="" element={<Home />} />
         <Route path="privacy" element={<Privacy />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

@@ -1,0 +1,11 @@
+{
+	local_certs
+}
+
+localhost {
+	encode
+
+	route {
+		reverse_proxy web:5173
+	}
+}

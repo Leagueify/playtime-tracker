@@ -158,16 +158,15 @@ export default function Home() {
   };
 
   const resetApp = () => {
-    setTimeData(
-      initialPlayers.map((player) => ({
-        name: player,
-        total: 0,
-        shiftTime: 0,
-        active: false,
-      }))
-    );
-    saveState(timeData, false)
     setShowResetModal(false)
+    const resetData = initialPlayers.map((player) => ({
+      name: player,
+      total: 0,
+      shiftTime: 0,
+      active: false,
+    }))
+    setTimeData(resetData)
+    saveState(resetData, false)
   }
 
   const resetTimers = () => {

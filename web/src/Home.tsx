@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Button from "./components/Button";
+import ConfirmationModal from "./components/ConfirmationModal";
 
 const initialPlayers = [
   "Player 1",
@@ -29,6 +30,8 @@ export default function Home() {
   const [timeData, setTimeData] = useState<Player[]>([]);
   const [clockRunning, setClockRunning] = useState<boolean>(false);
   const [showResetModal, setShowResetModal] = useState<boolean>(false);
+  const [modalAction, setModalAction] = useState<(() => void) | null>(null);
+  const [showModalTitle, setModalTitle] = useState<string>("");
 
   // Load saved state on first mount
   useEffect(() => {
@@ -59,14 +62,7 @@ export default function Home() {
     }
 
     // Fallback if no saved state
-    setTimeData(
-      initialPlayers.map((player) => ({
-        name: player,
-        total: 0,
-        shiftTime: 0,
-        active: false,
-      }))
-    );
+    resetApp()
   }, []);
 
   // Timer effect
@@ -161,6 +157,19 @@ export default function Home() {
     });
   };
 
+  const resetApp = () => {
+    setTimeData(
+      initialPlayers.map((player) => ({
+        name: player,
+        total: 0,
+        shiftTime: 0,
+        active: false,
+      }))
+    );
+    saveState(timeData, false)
+    setShowResetModal(false)
+  }
+
   const resetTimers = () => {
     setShowResetModal(false);
     const resetData = timeData.map((player) => ({
@@ -180,18 +189,38 @@ export default function Home() {
     saveState(timeData, newState);
   };
 
+  const displayResetModal = (modalTitle: string, action: () => void) => {
+    setModalAction(() => action)
+    setModalTitle(modalTitle);
+    setShowResetModal(true);
+  }
+
   return (
     <div className="max-w-md h-screen mx-auto p-4 bg-gray-100 rounded-lg shadow-lg flex flex-col">
       {/* fixed header */}
       <div className={`sticky top-0 bg-gray-100 z-10 pb-2 ${clockRunning ? "hidden" : ""}`}>
         <h2 className="text-xl font-bold text-center mb-2">Leagueify Playtime Tracker</h2>
         <div className="flex flex-col gap-2">
-          <Button
-            onClick={() => setShowResetModal(true)}
-            className="w-full bg-gray-600 text-white py-2 rounded-lg"
-          >
-            Reset Game
-          </Button>
+          <div className="flex justify-between">
+            <Button
+              onClick={() => displayResetModal(
+                "Are you sure you want to reset the game?",
+                resetTimers,
+              )}
+              className="w-50 bg-gray-600 text-white py-2 rounded-lg"
+            >
+              Reset Game
+            </Button>
+            <Button
+              onClick={() => displayResetModal(
+                "Are you sure you want to reset the application?",
+                resetApp,
+              )}
+              className="w-50 bg-red-600 text-white py-2 rounded-lg"
+            >
+              Reset App
+            </Button>
+          </div>
           <Button
             onClick={addPlayer}
             className="w-full bg-green-500 text-white py-2 rounded-lg"
@@ -226,10 +255,10 @@ export default function Home() {
             <div className="text-center ml-4 w-16">
               <div
                 className={`text-lg font-bold tabular-nums ${player.shiftTime >= 90
-                    ? "text-red-600"
-                    : player.shiftTime >= 75
-                      ? "text-amber-500"
-                      : "text-black"
+                  ? "text-red-600"
+                  : player.shiftTime >= 75
+                    ? "text-amber-500"
+                    : "text-black"
                   }`}
               >
                 {formatTime(player.shiftTime)}
@@ -254,25 +283,20 @@ export default function Home() {
 
       {/* reset modal */}
       {showResetModal && (
-        <div className="z-100 fixed max-w-md mx-auto inset-0 flex items-center justify-center bg-black/80">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <p className="mb-4">Are you sure you want to reset the game?</p>
-            <div className="flex justify-between">
-              <Button
-                onClick={resetTimers}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg"
-              >
-                Yes, Reset
-              </Button>
-              <Button
-                onClick={() => setShowResetModal(false)}
-                className="bg-gray-400 text-white px-4 py-2 rounded-lg"
-              >
-                Cancel
-              </Button>
-            </div>
-          </div>
-        </div>
+        <ConfirmationModal title={showModalTitle}>
+          <Button
+            onClick={() => modalAction?.()}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg"
+          >
+            Yes, Reset
+          </Button>
+          <Button
+            onClick={() => [setShowResetModal(false), setModalTitle("")]}
+            className="bg-gray-400 text-white px-4 py-2 rounded-lg"
+          >
+            Cancel
+          </Button>
+        </ConfirmationModal>
       )}
     </div>
   );
